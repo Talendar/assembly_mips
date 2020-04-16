@@ -21,6 +21,8 @@ menu_str: .ascii "\n\n    > COOL CALCULATOR 9000 <\n"
 enter_op_str: .asciiz "Enter 2 numbers.\n"	
 invalid_op_str: .asciiz "Invalid operation!\n"
 result_str: .asciiz "Result: "
+digitar_primeiro_numero_str: .asciiz "Digite um numero: "
+digitar_segundo_numero_str: .asciiz "Digite outro numero: "
 
 sum_opcode: .word 1
 sub_opcode: .word 2
@@ -36,6 +38,7 @@ exit_op_str: .word 0
 
 
 	.text
+	.globl main
 main:
 	SHOW_MENU:
 	# print menu msg
@@ -202,6 +205,36 @@ bmi_op:
 		
 # to_do: factorial
 fact_op:
+	#Put the value of $zero in $f0
+	mtc1  $zero,$f0
+	#Convert the value in $f0 to float
+	cvt.s.w $f0,$f0
+	
+	#Put 1 in $t1
+	addi $t1,$zero,1
+	#Put the value of $t1 in $f1
+	mtc1 $t1,$f1
+	#Convert the value in $f1 to float
+	cvt.s.w $f1,$f1
+	
+	#Put 1 in $f12
+	add.s $f12,$f0,$f1
+	#Put 0 in $f2
+	add.s $f2,$f0,$f0
+loop_fact:
+	#If $f8 is equals $f2 finish the loop
+	c.eq.s $f8,$f2	
+	bc1t end_fact
+	
+	#Increase the $f2
+	add.s $f2,$f2,$f1
+	
+	#Multiple $F12 by the $f2
+	mul.s $f12,$f12,$f2
+	
+	j loop_fact
+
+end_fact:
 	jr $ra
 
 		
