@@ -18,11 +18,10 @@ menu_str: .ascii "\n\n    > COOL CALCULATOR 9000 <\n"
 		  .ascii "   [0] EXIT\n"
 		  .asciiz "Operation: "
 		  
-enter_op_str: .asciiz "Enter 2 numbers.\n"	
 invalid_op_str: .asciiz "Invalid operation!\n"
 result_str: .asciiz "Result: "
-digitar_primeiro_numero_str: .asciiz "Digite um numero: "
-digitar_segundo_numero_str: .asciiz "Digite outro numero: "
+
+fp_zero: .float 0  # used to make operations with zero easier when using floating points
 
 sum_opcode: .word 1
 sub_opcode: .word 2
@@ -54,9 +53,7 @@ main:
 	move $s0, $v0
 	
 	# new line 
-	li $a0, 10
-	li $v0, 11
-	syscall
+	jal print_new_line
 	
 	# check operation ($s1 will hold the address of the procedure that represents the operation)
 	lw $t0, sum_opcode
@@ -124,7 +121,7 @@ main:
 	syscall
 	j SHOW_MENU
 	
-	# get operands (1 or 2)
+	# get operand(s) as user input and store them in $f7 and $f8
 	GET_OPERANDS2:
 	li $v0, 6
 	syscall
@@ -138,13 +135,12 @@ main:
 	la $ra, AFTER_OP
 	jr $s1
 	
-	# print result and loop back
+	# print result stored in $f12 and loop back
 	AFTER_OP:
 	li $v0, 4
 	la $a0, result_str
 	syscall
 	
-	#move $a0, $t0
 	li $v0, 2
 	syscall
 	j SHOW_MENU
@@ -203,7 +199,7 @@ bmi_op:
 	jr $ra
 
 		
-# to_do: factorial
+# to_do: factorial docs
 fact_op:
 	#Put the value of $zero in $f0
 	mtc1  $zero,$f0
@@ -221,23 +217,83 @@ fact_op:
 	add.s $f12,$f0,$f1
 	#Put 0 in $f2
 	add.s $f2,$f0,$f0
-loop_fact:
-	#If $f8 is equals $f2 finish the loop
-	c.eq.s $f8,$f2	
-	bc1t end_fact
-	
-	#Increase the $f2
-	add.s $f2,$f2,$f1
-	
-	#Multiple $F12 by the $f2
-	mul.s $f12,$f12,$f2
-	
-	j loop_fact
+	loop_fact:
+		#If $f8 is equals $f2 finish the loop
+		c.eq.s $f8,$f2	
+		bc1t end_fact
+		
+		#Increase the $f2
+		add.s $f2,$f2,$f1
+		
+		#Multiple $F12 by the $f2
+		mul.s $f12,$f12,$f2
+		
+		j loop_fact
 
-end_fact:
-	jr $ra
+	end_fact:
+		jr $ra
 
 		
-# to_do: fibonacci
+# Prints all the items of the Fibonacci sequence up to the item with index equal to the value stored in $f8. Returns 0 ($f12 = 0).
 fib_op:
+	# initializing registers
+	li $t0, 2  # iteration counter (starts with the 3rd element of the sequence)
+	li $t1, 0  # element of index n-2
+	li $t2, 1  # element of index n-1
+	move $t6, $ra  # saves the return address
+	
+	cvt.w.s $f8, $f8
+	mfc1 $t5, $f8  # $t5 now contains the argument $f8 as an int
+	
+	# checking input and printing first 2 items of the sequence
+	slti $t7, $t5, 1
+	bne $t7, $zero, END_FIB
+	li $a0, 0
+	li $v0, 1
+	syscall  # prints 0
+	
+	slti $t7, $t5, 2
+	bne $t7, $zero, END_FIB
+	jal print_space
+	li $a0,1
+	li $v0, 1
+	syscall  # prints 1
+	
+	slti $t7, $t5, 3
+	bne $t7, $zero, END_FIB
+	
+	# printing the rest of the sequence
+	FIB_START:
+		jal print_space
+		add $a0, $t2, $t1  # $a0 receives the sum of the n-1 element with the n-2 element
+		
+		li $v0, 1
+		syscall  # prints the current item (stored in $a0)
+		
+		move $t1, $t2  # the previous n-1 item now becomes the n-2 item  
+		move $t2, $a0  # the previous n item now becomes the n-1 item
+		addi $t0, $t0, 1  # increments the iteration counter
+	
+		slt $t7, $t0, $t5
+		beq $t7, 1, FIB_START
+	
+	END_FIB: 
+	jal print_new_line
+	l.s $f12, fp_zero
+	jr $t6
+	
+	
+# Prints a new line.
+print_new_line:
+	li $a0, 10
+	li $v0, 11
+	syscall
+	jr $ra
+	
+
+# Prints a blank space.
+print_space:
+	li $a0, 32
+	li $v0, 11
+	syscall
 	jr $ra
