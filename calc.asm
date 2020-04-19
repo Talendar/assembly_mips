@@ -193,6 +193,9 @@ exp_op:
 		
 # to_do: multiplication table
 tab_op:
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+
 	#Put the value of $zero in $f0
 	mtc1  $zero,$f0
 	#Convert the value in $f0 to float
@@ -254,6 +257,8 @@ loop_tab:
 
 end_tab:
 	jal print_new_line
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
 	jr $ra
 
 		
