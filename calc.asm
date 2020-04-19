@@ -20,6 +20,8 @@ menu_str: .ascii "\n\n    > COOL CALCULATOR 9000 <\n"
 		  
 invalid_op_str: .asciiz "Invalid operation!\n"
 result_str: .asciiz "Result: "
+print_mult: .asciiz " x "
+print_equals: .asciiz " = "
 
 fp_zero: .float 0  # used to make operations with zero easier when using floating points
 
@@ -191,6 +193,67 @@ exp_op:
 		
 # to_do: multiplication table
 tab_op:
+	#Put the value of $zero in $f0
+	mtc1  $zero,$f0
+	#Convert the value in $f0 to float
+	cvt.s.w $f0,$f0
+
+	#Put 1 in $t1
+	addi $t1,$zero,1
+	#Put the value of $t1 in $f1
+	mtc1 $t1,$f1
+	#Convert the value in $f1 to float
+	cvt.s.w $f1,$f1
+	
+	#put 1 in $f2
+	add.s $f2,$f1,$f0
+	
+	#Put 11 in $t1
+	addi $t1,$zero,11
+	#Put the value of $t1 in $f10
+	mtc1 $t1,$f10
+	#Convert the value in $f10 to float
+	cvt.s.w $f10,$f10
+
+loop_tab:	
+	c.eq.s $f2,$f10
+	bc1t end_tab
+	
+	add.s $f12,$f2,$f0
+	#print the number that is multiplying
+	li $v0,2
+	syscall
+	
+	#print +
+	li $v0,4
+	la $a0,print_mult
+	syscall
+	
+	add.s $f12,$f8,$f0
+	#print the number $f8
+	li $v0,2
+	syscall
+	
+	#print =
+	li $v0,4
+	la $a0,print_equals
+	syscall
+	
+	mul.s $f12,$f2,$f8
+	
+	#print the result
+	li $v0,2
+	syscall
+	
+	jal print_new_line
+	
+	#increment $f1
+	add.s $f2,$f2,$f1
+	
+	j loop_tab
+
+end_tab:
+	jal print_new_line
 	jr $ra
 
 		
