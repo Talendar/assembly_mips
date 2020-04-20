@@ -183,6 +183,42 @@ div_op:
 	
 # to_do: square root
 sqr_op:
+	addi, $sp, $sp, -8
+	sw $ra, 4($sp)
+	s.s $f8, 0($sp)
+	
+	# to_do: add check for negative numbers
+	
+	mov.s $f0, $f8		# Initializes the previous aproximation register $f0
+	addi $t0, $zero, 2
+	mtc1 $t0, $f4		# Sets $f4 to 2
+	cvt.s.w $f4, $f4	# Converts the content of $f4 to float
+	div.s $f2, $f0, $f4	# Defines an aproximation for the square root value
+	
+loop_sqr:
+	# Loops this algorithm until the previous aproximation and the current one are the same
+	c.eq.s $f0, $f2
+	bc1t end_sqr
+	
+	# Puts the result of the division between the parameter $f8 and the previous aproximation $f0 in $f6
+	div.s $f6, $f8, $f0
+	
+	# Calculates the average of $f6 and $f0
+	add.s $f6, $f6, $f0
+	div.s $f6, $f6, $f4
+	
+	# Updates current and previous aproximation
+	mov.s $f0, $f2
+	mov.s $f2, $f6
+	
+	j loop_sqr
+
+end_sqr:
+	mov.s $f12, $f2		# $f12 receives the return value
+	
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	
 	jr $ra
 	
 	
