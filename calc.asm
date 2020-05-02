@@ -350,38 +350,49 @@ bmi_op:
 	addi $sp, $sp, 12	# Pop stack
 	jr $ra			# Return
 		
-# to_do: factorial docs
-fact_op:
-	#Put the value of $zero in $f0
-	mtc1  $zero,$f0
-	#Convert the value in $f0 to float
-	cvt.s.w $f0,$f0
-	
-	#Put 1 in $t1
-	addi $t1,$zero,1
-	#Put the value of $t1 in $f1
-	mtc1 $t1,$f1
-	#Convert the value in $f1 to float
-	cvt.s.w $f1,$f1
-	
-	#Put 1 in $f12
-	add.s $f12,$f0,$f1
-	#Put 0 in $f2
-	add.s $f2,$f0,$f0
-	loop_fact:
-		#If $f8 is equals $f2 finish the loop
-		c.eq.s $f8,$f2	
-		bc1t end_fact
-		
-		#Increase the $f2
-		add.s $f2,$f2,$f1
-		
-		#Multiple $F12 by the $f2
-		mul.s $f12,$f12,$f2
-		
-		j loop_fact
+#Calculates the integer part of $f8 factorial
+#Parameter: $f8 will be truncate, so just the integer part will be use
+#Return: $f12 -> The factorial of the integer part of $f8
+fact_op: 
+	# Start procedure
+	addi $sp, $sp, -8	# Alloc 8 bytes on stack
+	sw $ra, 0($sp)		# Store the return address at Stack[0]
+	s.s $f8, 4($sp)		# Store the parameter at Stack[1]
 
+	#t0 will store the integer part of the $f8
+	cvt.w.s $f8,$f8  #Convert the value of $f8 from single to integer
+	mfc1 $t0,$f8     #Put the integer value of $f8 in $t0
+	
+	#t2 will store the result of the factorial
+	addi $t2,$0,1	#put 1 in $t2
+	
+	
+	add $t1,$0,$0	#Put 0 in $t1
+	
+	#Loop of factorial
+	loop_fact:
+		#If $t0 is equals $t1 finish the loop
+		beq $t0,$t1,end_fact	 #t0 is the value we want to reach and the $t1 is the auxiliary variable that will be incremented in each interaction
+
+		#Increase the $t1
+		addi $t1,$t1,1
+		
+		#Multiple $t2 by the $t1
+		mul $t2,$t2,$t1
+		
+		#Go back to the loop
+		j loop_fact
+	
+	# End procedure
 	end_fact:
+		#The return of the function will be in $f12
+		mtc1 $t2,$f12		#put the value of $t2 in $f12
+		cvt.s.w $f12,$f12	#Convert the $f12 to single
+		
+		lw $ra, 0($sp)		# Load the return address from Stack[0]
+		addi $sp, $sp, 8	# Pop stack
+		jr $ra			# Return
+		
 		jr $ra
 
 		
