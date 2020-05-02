@@ -184,8 +184,8 @@ div_op:
 # to_do: square root
 sqr_op:
 	addi, $sp, $sp, -8
-	sw $ra, 4($sp)
-	s.s $f8, 0($sp)
+	sw $ra, 0($sp)
+	s.s $f8, 4($sp)
 	
 	# to_do: add check for negative numbers
 	
@@ -216,7 +216,7 @@ loop_sqr:
 end_sqr:
 	mov.s $f12, $f2		# $f12 receives the return value
 	
-	lw $ra, 4($sp)
+	lw $ra, 0($sp)
 	addi $sp, $sp, 8
 	
 	jr $ra
@@ -224,8 +224,35 @@ end_sqr:
 	
 # to_do: exponentiation
 exp_op:
-	jr $ra
+	addi $sp, $sp, -12
+	sw $ra, 0($sp)
+	s.s $f7, 4($sp)
+	s.s $f8, 8($sp)
+	
+	mov.s $f0, $f7
+	addi $t1, $zero, 1
+	
+	# Delete this 2 lines after fixing the parameters
+	cvt.w.s $f8, $f8
+	mfc1 $t0, $f8
+	
+	# to_do: add check for negative $t0
+	
+loop_exp:
+	beq $t0, $t1, end_exp
+	
+	mul.s $f0, $f0, $f7
+	addi $t0, $t0, -1
+	
+	# to_do: add check for overflow
+	
+	j loop_exp
 
+end_exp:
+	mov.s $f12, $f0
+	lw $ra, 0($sp)
+	addi $sp, $sp, 12
+	jr $ra
 		
 # to_do: multiplication table
 tab_op:
