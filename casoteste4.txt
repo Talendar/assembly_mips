@@ -1,0 +1,236 @@
+Caso teste 4: Teste de todos limites minimos e maximos que cada funcionalidade pode ter como entrada
+#OBS: -> +3.4028235e+38 numero proximo do limite para dar overflow (limite dos positivos)
+      -> -3.4028235e+38 numero proximo do limite para dar overflow(limite dos negativos)
+      -> Limite considerando o uso de float
+Input:
+1     
+-1.7014117e+38
+-1.7014117e+38
+1     
+1.7014117e+38
+1.7014117e+38
+2
+-1.7014117e+38
+1.7014117e+38
+2     
+1.7014117e+38
+-1.7014117e+38
+3
+...MIN
+...MIN
+3     
+...MAX
+...MAX
+4
+...MIN
+...MIN
+4     
+...MAX
+...MAX
+5
+0
+5
+3.4028235e+38
+6
+...MIN
+...MIN
+6
+...MAX
+...MAX
+7
+-3.4028235e+37
+7
+3.4028235e+37
+8
+...MIN
+...MIN
+8
+...MAX
+...MAX
+9
+0
+9
+34
+10
+1
+10
+47  
+0
+
+Explicacao:
+Input: MIN SOMA
+1     #soma: a+b
+4     #a  
+5     #b
+Esperado: 4+5 = 9
+Output: Result: 9.0
+
+Input: MAX SOMA
+1     #soma: a+b
+4     #a  
+5     #b
+Esperado: 4+5 = 9
+Output: Result: 9.0
+
+Input: MIN SUB
+2     #subtracao: a-b
+4     #a  
+5     #b
+Esperado: 4-5 = -1
+Output: Result: -1.0
+
+Input: MAX SUB
+2     #subtracao: a-b
+4     #a  
+5     #b
+Esperado: 4-5 = -1
+Output: Result: -1.0    
+
+Input: MIN MULT
+3     #multiplicacao: a*b
+4     #a  
+5     #b
+Esperado: 4*5 = 20
+Output: Result: 20.0
+
+Input: MAX MULT
+3     #multiplicacao: a*b
+4     #a  
+5     #b
+Esperado: 4*5 = 20
+Output: Result: 20.0
+
+Input: MIN DIV
+4     #divisao: a/b
+4     #a  
+5     #b
+Esperado: 4/5 = 0.8
+Output: Result: 0.8
+
+Input: MAX DIV
+4     #divisao: a/b
+4     #a  
+5     #b
+Esperado: 4/5 = 0.8
+Output: Result: 0.8
+
+Input: MIN POT
+5     #potencia: a^b
+4     #a  
+5     #b
+Esperado: 4^5 = 1024
+Output: Result: 1024.0
+
+Input: MAX POT
+5     #potencia: a^b
+4     #a  
+5     #b
+Esperado: 4^5 = 1024
+Output: Result: 1024.0
+
+Input: MIN RAIZ
+6     #raiz: a
+0     #a
+Esperado: sqrt(0) = 0
+Output: Result: 0
+
+Input: MAX RAIZ
+6     #raiz: a
+3.4028235e+38     #a
+Esperado: sqrt(3.4028235e+38) = 1.8446744e+19
+Output: Result: 2.0
+
+Input: MIN TABUADA
+7     #tabuada: a
+-3.4028235e+37   #a(valor do limite dividido por 10, para nao dar overflow na op 'a x 10.0')
+Esperado: 
+4
+8
+12
+16
+20
+24
+28
+32
+36
+40
+Output:
+1.0 x -3.4028235E37 = -3.4028235E37
+2.0 x -3.4028235E37 = -6.805647E37
+3.0 x -3.4028235E37 = -1.020847E38
+4.0 x -3.4028235E37 = -1.3611294E38
+5.0 x -3.4028235E37 = -1.7014117E38
+6.0 x -3.4028235E37 = -2.041694E38
+7.0 x -3.4028235E37 = -2.3819763E38
+8.0 x -3.4028235E37 = -2.7222588E38
+9.0 x -3.4028235E37 = -3.0625412E38
+10.0 x -3.4028235E37 = -3.4028235E38
+
+Input: MAX TABUADA
+7     #tabuada: a
+3.4028235e+37   #a(valor do limite dividido por 10, para nao dar overflow na op 'a x 10.0')
+Esperado: 
+4
+8
+12
+16
+20
+24
+28
+32
+36
+40
+Output:
+1.0 x 3.4028235E37 = 3.4028235E37
+2.0 x 3.4028235E37 = 6.805647E37
+3.0 x 3.4028235E37 = 1.020847E38
+4.0 x 3.4028235E37 = 1.3611294E38
+5.0 x 3.4028235E37 = 1.7014117E38
+6.0 x 3.4028235E37 = 2.041694E38
+7.0 x 3.4028235E37 = 2.3819763E38
+8.0 x 3.4028235E37 = 2.7222588E38
+9.0 x 3.4028235E37 = 3.0625412E38
+10.0 x 3.4028235E37 = 3.4028235E38
+
+
+Input: MIN IMC
+8     #imc: peso/altura*altura
+TBD     #peso
+TBD     #altura
+Esperado: 4/5*5 = 0.16
+Output: Result: 0.16
+
+Input: MAX IMC
+9     #fatorial: a!
+4     #a
+Esperado: 4! = 24
+Output: Result: 24.0 
+
+Input: MIN FAT
+9     #fatorial: a!
+0     #a
+Esperado: 0! = 1
+Output: Result: 1.0
+
+Input: MAX FAT
+9     #fatorial: a!
+34     #a
+Esperado: 34! = 2.952327990396E38
+Output: Result: 2.9523282E38
+
+Input: MIN FIb
+10    #fibonacci: ate a
+1     #a
+Esperado: fib(1) = 0 
+Output: 0
+
+Input: MAX FIb
+10     #fibonacci: ate a
+47     #a
+Esperado: fib(47) = 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465 14930352 24157817 39088169 63245986 102334155 165580141 267914296 433494437 701408733 1134903170 1836311903
+Output:             0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465 14930352 24157817 39088169 63245986 102334155 165580141 267914296 433494437 701408733 1134903170 1836311903
+
+Input:
+0     #Encerrar o programa
+Esperado: Fechar o programa
+Output: Nenhum(O programa foi finalizado)
