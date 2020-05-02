@@ -1,0 +1,113 @@
+Caso teste 3: Teste de entrada invalida nas funcoes(verificar se cada operacao nao permite valores invalidos)
+Input:
+1     
+340282350000000000000000000000000000000       
+340282350000000000000000000000000000000  
+2    
+-340282350000000000000000000000000000000     
+340282350000000000000000000000000000000            
+3     
+1.5     
+340282350000000000000000000000000000000    
+4     
+4     
+0     
+5    
+POTENCIA       
+POTENCIA
+6
+-5   
+7     
+340282350000000000000000000000000000000     
+8     
+-1     
+-1    
+9     
+-1    
+10    
+-1    
+0
+
+Explicacao:
+ -> +340282350000000000000000000000000000000 numero proximo do limite para dar overflow 
+ -> -340282350000000000000000000000000000000 numero proximo do limite para dar overflow
+Input: 
+1     #soma: a+b
+340282350000000000000000000000000000000     #a  
+340282350000000000000000000000000000000     #b
+Esperado: overflow
+Output: Result: Infinity
+
+Input:
+2     #subtracao: a-b
+-340282350000000000000000000000000000000    #a  
+340282350000000000000000000000000000000     #b
+Esperado: overflow
+Output: Result: -Infinity  
+
+Input: 
+3     #multiplicacao: a*b
+340282350000000000000000000000000000000   #a  
+1.5   #b
+Esperado: 340282350000000000000000000000000000000 * 1.5 : overflow
+Output: Result: Infinity 
+
+Input: 
+4     #divisao: a/b
+4     #a  
+0     #b
+Esperado: Nao foi possivel calcular, divisao por 0
+Output: "Invalid operand! Divisor cant be 0."
+
+Input: 
+5     #potencia: a^b
+TBD     #a  
+TBD     #b
+Esperado: 
+Output: Result: 
+
+Input: 
+6     #raiz: a
+-5     #a
+Esperado: sqrt(-5) : valor de a invalido
+Output: "Invalid operand! Operand must be >= 0."
+
+Input: 
+7     #tabuada: a
+340282350000000000000000000000000000000     #a
+Esperado: overflow, com execao do propio numero(3.4028235E38)
+Output:
+1.0 x 3.4028235E38 = 3.4028235E38
+2.0 x 3.4028235E38 = Infinity
+3.0 x 3.4028235E38 = Infinity
+4.0 x 3.4028235E38 = Infinity
+5.0 x 3.4028235E38 = Infinity
+6.0 x 3.4028235E38 = Infinity
+7.0 x 3.4028235E38 = Infinity
+8.0 x 3.4028235E38 = Infinity
+9.0 x 3.4028235E38 = Infinity
+10.0 x 3.4028235E38 = Infinity
+
+Input:
+8     #imc: peso/altura*altura
+-1    #peso
+-1    #altura
+Esperado: Entrada invalida
+Output: "Invalid operand! Operand must be >= 0."
+
+Input: 
+9     #fatorial: a!
+-1    #a
+Esperado: -1! Entrada invalida
+Output: "Invalid operand! Operand must be >= 0."
+
+Input:
+10     #fibonacci: ate a
+-1     #a
+Esperado: fib(-1): Entrada invalida
+Output: "Invalid operand! Operand must be >= 0."
+
+Input:
+0     #Encerrar o programa
+Esperado: Fechar o programa
+Output: Nenhum(O programa foi finalizado)
