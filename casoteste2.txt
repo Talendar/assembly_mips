@@ -1,0 +1,44 @@
+Caso teste 2: Teste de entrada no menu(verificar se o menu aceita input invalido)
+Input:
+1
+2
+3
+11
+2340
+-23
+-9584
+0
+
+Explicacao:
+
+Input: Teste de uma funcionalidade(soma) correta do menu 
+1     #soma: a+b
+2     #a  
+3     #b
+Esperado: 2+3 = 5
+Output: Result: 5.0
+
+Input:  
+11     #opcao invalida
+Esperado: Nao aceitar essa opcao do menu
+Output: "Invalid operation!"
+
+Input:
+2340     #opcao invalida
+Esperado: Nao aceitar essa opcao do menu
+Output: "Invalid operation!"
+
+Input:
+-23     #opcao invalida
+Esperado: Nao aceitar essa opcao do menu
+Output: "Invalid operation!"
+
+Input:
+-9584     #opcao invalida
+Esperado: Nao aceitar essa opcao do menu
+Output: "Invalid operation!"
+
+Input:
+0     #Encerrar o programa
+Esperado: Fechar o programa
+Output: Nenhum(O programa foi finalizado)
