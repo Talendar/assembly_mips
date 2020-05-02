@@ -1,0 +1,120 @@
+Caso teste 1: Teste de todas as funcionalidades do programa(verificar se efetuam a operacao correta)
+Input:
+1     
+4      
+5     
+2     
+4       
+5     
+3     
+4     
+5     
+4     
+4     
+5     
+5    
+4       
+5    
+7     
+4     
+8     
+4     
+5    
+9     
+4    
+9    
+4    
+0
+
+Explicacao:
+Input: 
+1     #soma: a+b
+4     #a  
+5     #b
+Esperado: 4+5 = 9
+Output: Result: 9.0
+
+Input:
+2     #subtracao: a-b
+4     #a  
+5     #b
+Esperado: 4-5 = -1
+Output: Result: -1.0  
+
+Input: 
+3     #multiplicacao: a*b
+4     #a  
+5     #b
+Esperado: 4*5 = 20
+Output: Result: 20.0
+
+Input: 
+4     #divisao: a/b
+4     #a  
+5     #b
+Esperado: 4/5 = 0.8
+Output: Result: 0.8
+
+Input: 
+5     #potencia: a^b
+4     #a  
+5     #b
+Esperado: 4^5 = 1024
+Output: Result: 1024.0
+
+Input: 
+6     #raiz: a
+4     #a
+Esperado: sqrt(4) = 2
+Output: Result: 2.0
+
+Input: 
+7     #tabuada: a
+4     #a
+Esperado: 
+4
+8
+12
+16
+20
+24
+28
+32
+36
+40
+Output:
+1.0 x 4.0 = 4.0
+2.0 x 4.0 = 8.0
+3.0 x 4.0 = 12.0
+4.0 x 4.0 = 16.0
+5.0 x 4.0 = 20.0
+6.0 x 4.0 = 24.0
+7.0 x 4.0 = 28.0
+8.0 x 4.0 = 32.0
+9.0 x 4.0 = 36.0
+10.0 x 4.0 = 40.0
+
+Input:
+8     #imc: peso/altura*altura
+4     #peso
+5     #altura
+Esperado: 4/5*5 = 0.16
+Output: Result: 0.16
+
+Input: 
+9     #fatorial: a!
+4     #a
+Esperado: 4! = 24
+Output: Result: 24.0 
+
+Input:
+9     #fibonacci: ate a
+4     #a
+Esperado: fib(4) = 0 1 1 2
+Output: 0 1 1 2
+
+Input:
+0     #Encerrar o programa
+Esperado: Fechar o programa
+Output: Nenhum(O programa foi finalizado)
+
