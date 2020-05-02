@@ -340,7 +340,7 @@ bmi_op:
 	s.s $f7, 4($sp)		# Store the weight parameter at Stack[1]
 	s.s $f8, 8($sp)		# Store the height parameter at Stack[2]
 	
-	# Calculates body mass (weigh / (height * height))
+	# Calculates body mass (weight / (height * height))
 	mul.s $f1, $f8, $f8	# Multiply height by itself and store at $f1
 	div.s $f0, $f7, $f1	# Divide weight by height squared and store at $f0
 	
