@@ -327,8 +327,19 @@ end_tab:
 		
 # to_do: body mass index
 bmi_op:
+	addi $sp, $sp, -12
+	sw $ra, 0($sp)
+	s.s $f7, 4($sp)
+	s.s $f8, 8($sp)
+	
+	mul.s $f1, $f8, $f8
+	div.s $f0, $f7, $f1
+	
+	mov.s $f12, $f0
+	
+	lw $ra, 0($sp)
+	addi $sp, $sp, 12
 	jr $ra
-
 		
 # to_do: factorial docs
 fact_op:
