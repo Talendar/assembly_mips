@@ -183,14 +183,84 @@ div_op:
 	
 # to_do: square root
 sqr_op:
-	jr $ra
+	# Start procedure
+	addi, $sp, $sp, -8	# Alloc 8 bytes on stack
+	sw $ra, 0($sp)		# Store the return address at Stack[0]
+	s.s $f8, 4($sp)		# Store the radicand at Stack[1]
+	
+	# to_do: add check for negative numbers
+	
+	# Initialize registers
+	mov.s $f0, $f8		# Initialize the previous aproximation register $f0
+	addi $t0, $zero, 2	# Store the integer 2 at $t0
+	mtc1 $t0, $f4		# Set $f4 to 2 using $t0
+	cvt.s.w $f4, $f4	# Convert the content of $f4 to float
+	div.s $f2, $f0, $f4	# Define an aproximation for the square root value
+	
+loop_sqr:
+	# Loop this algorithm until the previous aproximation and the current one are the same
+	c.eq.s $f0, $f2
+	bc1t end_sqr
+	
+	# Calculate the offset of the aproximation by dividing the radicand by the previous aproximation
+	div.s $f6, $f8, $f0
+	
+	# Calculates the average of $f6 and $f0
+	add.s $f6, $f6, $f0	# Sum current and previous aproximations
+	div.s $f6, $f6, $f4	# Divide the result by 2, which is stored in $f4
+	
+	# Updates current and previous aproximation
+	mov.s $f0, $f2		# Update previous aproximation
+	mov.s $f2, $f6		# Update new aproximation
+	
+	j loop_sqr
+
+end_sqr:
+	# End procedure
+	mov.s $f12, $f2		# Put the result in $f12 as the return value
+	lw $ra, 0($sp)		# Load the return address from Stack[0]
+	addi $sp, $sp, 8	# Pop Stack
+	jr $ra			# Return
 	
 	
 # to_do: exponentiation
 exp_op:
-	jr $ra
+	# Start procedure
+	addi $sp, $sp, -12	# Alloc 12 bytes on stack
+	sw $ra, 0($sp)		# Store the return address at Stack[0]
+	s.s $f7, 4($sp)		# Store the base parameter at Stack[1]
+	s.s $f8, 8($sp)		# Store the power parameter at Stack[2]
+	
+	# Initialize registers
+	mov.s $f0, $f7		# Inicialize partial result register
+	addi $t1, $zero, 1	# Initialize a constant of value 1
+	
+	# Delete this 2 lines after fixing the parameters
+	cvt.w.s $f8, $f8
+	mfc1 $t0, $f8
+	
+	# to_do: add check for negative $t0
+	
+loop_exp:
+	# Check if it reach the final result
+	beq $t0, $t1, end_exp		# End loop when power is 1
+	
+	# Calculate one interation
+	mul.s $f0, $f0, $f7		# Multiply the partial result with the base parameter
+	addi $t0, $t0, -1		# Subtracts 1 of the power for the next iteration
+	
+	# to_do: add check for overflow
+	
+	# Continue the loop
+	j loop_exp			# Redo the loop
 
-		
+end_exp:
+	# End procedure
+	mov.s $f12, $f0			# Put the result in $f12 as the return value
+	lw $ra, 0($sp)			# Load the return address from Stack[0]
+	addi $sp, $sp, 12		# Pop stack
+	jr $ra				# Return
+	
 # to_do: multiplication table
 tab_op:
 	addi $sp, $sp, -4
@@ -264,8 +334,21 @@ end_tab:
 		
 # to_do: body mass index
 bmi_op:
-	jr $ra
-
+	# Start procedure
+	addi $sp, $sp, -12	# Alloc 12 bytes on stack
+	sw $ra, 0($sp)		# Store the return address at Stack[0]
+	s.s $f7, 4($sp)		# Store the weight parameter at Stack[1]
+	s.s $f8, 8($sp)		# Store the height parameter at Stack[2]
+	
+	# Calculates body mass (weigh / (height * height))
+	mul.s $f1, $f8, $f8	# Multiply height by itself and store at $f1
+	div.s $f0, $f7, $f1	# Divide weight by height squared and store at $f0
+	
+	# End procedure
+	mov.s $f12, $f0		# Put the result in $f12 as the return value
+	lw $ra, 0($sp)		# Load the return address from Stack[0]
+	addi $sp, $sp, 12	# Pop stack
+	jr $ra			# Return
 		
 # to_do: factorial docs
 fact_op:
