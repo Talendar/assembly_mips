@@ -22,6 +22,7 @@ invalid_op_str: .asciiz "Invalid operation!\n"
 invalid_op_neg: .asciiz "Invalid operand! Operand must be >= 0."
 invalid_op_neg_div: .asciiz "Invalid operand! Divisor cant be 0."
 invalid_op_neg_exp: .asciiz "Invalid operand! Expoent must be >= 0."
+invalid_op_neg_zero: .asciiz "Invalid operand! Operand must be > 0."
 result_str: .asciiz "Result: "
 print_mult: .asciiz " x "
 print_equals: .asciiz " = "
@@ -227,34 +228,64 @@ sqr_op:
 	j sqr_after_print	
 	
 	# Initialize registers
-	start_sqr: 
-		mov.s $f0, $f8		# Initialize the previous aproximation register $f0
+	start_sqr:
+		# Define initial min to $f0
+		mtc1 $zero, $f0		# Set $f0 (min registrator) to 0
+		cvt.s.w $f0, $f0	# Convert the content of $f0 to float
+		
+		# Define constant 2 to $f2
 		addi $t0, $zero, 2	# Store the integer 2 at $t0
-		mtc1 $t0, $f4		# Set $f4 to 2 using $t0
-		cvt.s.w $f4, $f4	# Convert the content of $f4 to float
-		div.s $f2, $f0, $f4	# Define an aproximation for the square root value
+		mtc1 $t0, $f2		# Set $f2 to 2 using $t0
+		cvt.s.w $f2, $f2	# Convert the content of $f2 to float
+		
+		# Define initial max to $f6
+		mov.s $f6, $f8		# Initialize the max registrator $f6
 	
 	loop_sqr:
-		# Loop this algorithm until the previous aproximation and the current one are the same
-		c.eq.s $f0, $f2
-		bc1t end_sqr
+		# Loop this binary search until the min isn't less than max
+		c.lt.s $f0, $f6
+		bc1f end_sqr
 		
-		# Calculate the offset of the aproximation by dividing the radicand by the previous aproximation
-		div.s $f6, $f8, $f0
+		# Find the middle of min and max
+		add.s $f4, $f0, $f6	# Sum min and max and store in $f4 (mid)
+		div.s $f4, $f4, $f2	# Divide the sum by 2 ($f2)
 		
-		# Calculates the average of $f6 and $f0
-		add.s $f6, $f6, $f0	# Sum current and previous aproximations
-		div.s $f6, $f6, $f4	# Divide the result by 2, which is stored in $f4
+		# Get mid squared
+		mul.s $f10, $f4, $f4	# Put mid squared in $f10
 		
-		# Updates current and previous aproximation
-		mov.s $f0, $f2		# Update previous aproximation
-		mov.s $f2, $f6		# Update new aproximation
+		# Check if mid ($f4) squared is the same as the radicand ($f8)
+		c.eq.s $f10, $f8	# Compare with the radicand
+		bc1t end_sqr		# Finish loop if equal
 		
-		j loop_sqr
+		# Check if mid ($f4) squared is less than the radicand ($f8)
+		c.lt.s $f10, $f8	# Compare with the radicand (flag == false if less for some reason)
+		bc1f sqr_less		# Branch if less
+		
+		# If min is different than mid, set min as mid and continue the loop
+		c.eq.s $f0, $f4		# If min is equal mid, then the error is too low to fit the floating precision
+		bc1t end_sqr		# If that's the case, then we already got the best result, so end the loop
+		mov.s $f0, $f4		# Set min as mid
+		j loop_sqr		# Continue the loop
+		
+		sqr_less:
+			# Set max as mid and continue the loop
+			c.eq.s $f6, $f4	# If min is equal mid, then the error is too low to fit the floating precision
+			bc1t end_sqr	# If that's the case, then we already got the best result, so end the loop
+			mov.s $f6, $f4	# Set max as mid
+			j loop_sqr	# Continue the loop
 
 	end_sqr:
+		# Truncate the result to 2 decimal places
+		addi $t0, $zero, 100	# Get the value 100 to $t0
+		mtc1 $t0, $f18		# Put 100 in $f18
+		cvt.s.w $f18, $f18	# Convert it to float
+		mul.s $f4, $f4, $f18	# Multiply the result ($f4) by 100 to preserve the first 2 decimal places
+		trunc.w.s $f4, $f4	# Truncate the result to integer
+		cvt.s.w $f4, $f4	# Convert it back to float
+		div.s $f4, $f4, $f18	# Divide the result by 100 to restore it to 2 decimal places
+		
 		# print result
-		mov.s $f12, $f2		# put the result in $f12 
+		mov.s $f12, $f4		# put the result in $f12 
 		jal print_result
 		sqr_after_print:
 			lw $ra, 0($sp)		# Load the return address from Stack[0]
@@ -284,11 +315,9 @@ exp_op:
 	mov.s $f0, $f7		# Inicialize partial result register
 	addi $t1, $zero, 1	# Initialize a constant of value 1
 	
-	# Delete this 2 lines after fixing the parameters
-	cvt.w.s $f8, $f8
-	mfc1 $t0, $f8
-	
-	# to_do: add check for negative $t0
+	# Convert the power register to integer while truncating it and put in $t0
+	cvt.w.s $f8, $f8	# Convert power register while truncating it
+	mfc1 $t0, $f8		# Put in $t0
 	
 	loop_exp:
 		# Check if it reach the final result
@@ -297,8 +326,6 @@ exp_op:
 		# Calculate one interation
 		mul.s $f0, $f0, $f7		# Multiply the partial result with the base parameter
 		addi $t0, $t0, -1		# Subtracts 1 of the power for the next iteration
-		
-		# to_do: add check for overflow
 		
 		# Continue the loop
 		j loop_exp			# Redo the loop
@@ -389,15 +416,15 @@ bmi_op:
 	s.s $f7, 4($sp)		# Store the weight parameter at Stack[1]
 	s.s $f8, 8($sp)		# Store the height parameter at Stack[2]
 	
-	# check negative input
+	# check negative input and zero
 	mtc1 $zero, $f5
-	c.lt.s $f7, $f5
+	c.le.s $f7, $f5
 	bc1t bmi_print_error
-	c.lt.s $f8, $f5
+	c.le.s $f8, $f5
 	bc1f bmi_start
 	bmi_print_error:
 		li $v0, 4
-		la $a0, invalid_op_neg
+		la $a0, invalid_op_neg_zero
 		syscall
 		j bmi_after_print
 	
