@@ -137,7 +137,7 @@ main:
 	syscall
 	mov.s $f8, $f0
 	
-	# execute op (execute the procedure whose adress is stored at $s1)
+	# execute op (execute the procedure whose address is stored at $s1)
 	la $ra, AFTER_OP
 	jr $s1
 	
@@ -312,8 +312,10 @@ exp_op:
 	
 	# Initialize registers
 	start_exp:
-	mov.s $f0, $f7		# Inicialize partial result register
-	addi $t1, $zero, 1	# Initialize a constant of value 1
+	# Initialize partial result register
+	addi $t1, $zero, 1	# Get value 1 in $t1
+	mtc1 $t1, $f0		# Get value 1 from $t1 to the partial result register
+	cvt.s.w $f0, $f0 	# Convert partial result register to float
 	
 	# Convert the power register to integer while truncating it and put in $t0
 	cvt.w.s $f8, $f8	# Convert power register while truncating it
@@ -321,7 +323,7 @@ exp_op:
 	
 	loop_exp:
 		# Check if it reach the final result
-		beq $t0, $t1, end_exp		# End loop when power is 1
+		beq $t0, $zero, end_exp		# End loop when power is 1
 		
 		# Calculate one interation
 		mul.s $f0, $f0, $f7		# Multiply the partial result with the base parameter
