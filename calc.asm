@@ -633,12 +633,11 @@ fib_op:
 	syscall
 	j end_fib	
 
-	# initializing registers
-	fib_no_error:
+# initializing registers
+fib_no_error:
 	li $t0, 2  		# iteration counter (starts with the 3rd element of the sequence)
 	li $t1, 0  		# element of index n-2
 	li $t2, 1  		# element of index n-1
-	move $t6, $ra  		# saves the return address
 	
 	cvt.w.s $f8, $f8
 	mfc1 $t5, $f8  		# $t5 now contains the argument $f8 as an int
@@ -678,7 +677,7 @@ fib_start:
 end_fib: 
 	lw $ra, 0($sp)		# Load the return address from Stack[0]
 	addi $sp, $sp, 4	# Pop stack
-	jr $t6
+	jr $ra
 	
 	
 # Prints a new line.
