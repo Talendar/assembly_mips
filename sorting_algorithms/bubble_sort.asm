@@ -1,5 +1,4 @@
 # Implementation of the bubble sort algorithm.
-#
 # Author: Talendar (Gabriel Nogueira)
 
 
