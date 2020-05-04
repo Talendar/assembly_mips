@@ -4,10 +4,10 @@
 # Simple program that simulates a calculator.
 #
 # Authors:
-# Gabriel Nogueira
-# Lucas Yamamoto
-# Matheus Penteado
-# Daniel Suzumura
+#   Gabriel Nogueira
+#   Lucas Yamamoto
+#   Matheus Penteado
+#   Daniel Suzumura
 	
 	.data
 	.align 0
