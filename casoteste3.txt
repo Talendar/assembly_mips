@@ -7,21 +7,21 @@ Input:
 -3.4028235e+38   
 3.4028235e+38          
 3     
-1.5     
 3.4028235e+38  
+1.5     
 4     
 4     
 0     
-5    
-POTENCIA       
-POTENCIA
+5
+-5    
 6
--5   
+2
+-2   
 7     
 3.4028235e+38   
 8     
 -1     
--1    
+0   
 9     
 -1    
 10    
@@ -60,17 +60,17 @@ Esperado: Nao foi possivel calcular, divisao por 0
 Output: "Invalid operand! Divisor cant be 0."
 
 Input: 
-5     #potencia: a^b
-TBD     #a  
-TBD     #b
-Esperado: 
-Output: Result: 
-
-Input: 
-6     #raiz: a
+5     #raiz: a
 -5     #a
 Esperado: sqrt(-5) : valor de a invalido
 Output: "Invalid operand! Operand must be >= 0."
+
+Input: 
+6     #potencia: a^b
+2     #a  
+-2     #b
+Esperado: 
+Output: "Invalid operand! Expoent must be >= 0."
 
 Input: 
 7     #tabuada: a
@@ -91,9 +91,9 @@ Output:
 Input:
 8     #imc: peso/altura*altura
 -1    #peso
--1    #altura
+0    #altura
 Esperado: Entrada invalida
-Output: "Invalid operand! Operand must be >= 0."
+Output: "Invalid operand! Operand must be > 0."
 
 Input: 
 9     #fatorial: a!
