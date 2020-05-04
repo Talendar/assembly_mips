@@ -4,10 +4,10 @@
 # Simple program that simulates a calculator.
 #
 # Authors:
-# Gabriel de Oliveira Guedes Nogueira (to_do: nusp)
-# Lucas (to_do: nusp)
-# Matheus (to_do: nusp)
-# Daniel (to_do: nusp)
+# Gabriel Nogueira
+# Lucas Yamamoto
+# Matheus Penteado
+# Daniel Suzumura
 	
 	.data
 	.align 0
