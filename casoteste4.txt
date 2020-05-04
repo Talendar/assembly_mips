@@ -1,7 +1,9 @@
 Caso teste 4: Teste de todos limites minimos e maximos que cada funcionalidade pode ter como entrada
+
 #OBS: -> +3.4028235e+38 numero proximo do limite para dar overflow (limite dos positivos)
       -> -3.4028235e+38 numero proximo do limite para dar overflow(limite dos negativos)
       -> Limite considerando o uso de float
+
 Input:
 1     
 -1.7014117e+38
@@ -16,37 +18,37 @@ Input:
 1.7014117e+38
 -1.7014117e+38
 3
-...MIN
-...MIN
-3     
-...MAX
-...MAX
+-3e18
+1e20
+3   
+3e18  
+1e20
 4
-...MIN
-...MIN
+-6e19 
+2e-19
 4     
-...MAX
-...MAX
+6e19 
+2e-19
 5
 0
 5
 3.4028235e+38
 6
-...MIN
-...MIN
+2
+0
 6
-...MAX
-...MAX
+2
+127
 7
 -3.4028235e+37
 7
 3.4028235e+37
 8
-...MIN
-...MIN
+0.1
+0.2
 8
-...MAX
-...MAX
+600
+3
 9
 0
 9
@@ -60,100 +62,100 @@ Input:
 Explicacao:
 Input: MIN SOMA
 1     #soma: a+b
-4     #a  
-5     #b
-Esperado: 4+5 = 9
-Output: Result: 9.0
+-1.7014117e+38     #a  
+-1.7014117e+38     #b
+Esperado: -1.7014117e+38 + -1.7014117e+38 = -3.4028234e+38
+Output: Result: -3.4028235E38
 
 Input: MAX SOMA
-1     #soma: a+b
-4     #a  
-5     #b
-Esperado: 4+5 = 9
-Output: Result: 9.0
+1                #soma: a+b
+1.7014117e+38    #a  
+1.7014117e+38    #b
+Esperado: 1.7014117e+38 + 1.7014117e+38 = 3.4028234e+38
+Output: Result: 3.4028235E38
 
 Input: MIN SUB
 2     #subtracao: a-b
-4     #a  
-5     #b
-Esperado: 4-5 = -1
-Output: Result: -1.0
+-1.7014117e+38     #a  
+1.7014117e+38     #b
+Esperado: -1.7014117e+38 - -1.7014117e+38 = -3.4028234e+38
+Output: Result: -3.4028235E38
 
 Input: MAX SUB
 2     #subtracao: a-b
-4     #a  
-5     #b
-Esperado: 4-5 = -1
-Output: Result: -1.0    
-
+1.7014117e+38     #a  
+-1.7014117e+38     #b
+Esperado: -1.7014117e+38 + -1.7014117e+38 = 3.4028234e+38
+Output: Result: 3.4028235E38
+    
 Input: MIN MULT
-3     #multiplicacao: a*b
-4     #a  
-5     #b
-Esperado: 4*5 = 20
-Output: Result: 20.0
+3        #multiplicacao: a*b
+-3e18    #a  
+1e20     #b
+Esperado: -3e18 * 1e20 = -3e38
+Output: Result: -3.0E38
 
 Input: MAX MULT
-3     #multiplicacao: a*b
-4     #a  
-5     #b
-Esperado: 4*5 = 20
-Output: Result: 20.0
+3       #multiplicacao: a*b
+3e18    #a  
+1e20    #b
+Esperado: 3e18 * 1e20 = -3e38
+Output: Result: 3.0E38
 
 Input: MIN DIV
 4     #divisao: a/b
-4     #a  
-5     #b
-Esperado: 4/5 = 0.8
-Output: Result: 0.8
+-6e19     #a  
+2e-19     #b
+Esperado: (-6e19)/2e-19 = -3.0E38
+Output: Result: Result: -3.0000002E38
 
 Input: MAX DIV
 4     #divisao: a/b
-4     #a  
-5     #b
-Esperado: 4/5 = 0.8
-Output: Result: 0.8
-
-Input: MIN POT
-5     #potencia: a^b
-4     #a  
-5     #b
-Esperado: 4^5 = 1024
-Output: Result: 1024.0
-
-Input: MAX POT
-5     #potencia: a^b
-4     #a  
-5     #b
-Esperado: 4^5 = 1024
-Output: Result: 1024.0
+6e19    #a  
+2e-19   #b
+Esperado: 6e19/2e-19 = 3.0E38
+Output: Result: 3.0000002E38
 
 Input: MIN RAIZ
-6     #raiz: a
+5     #raiz: a
 0     #a
 Esperado: sqrt(0) = 0
 Output: Result: 0
 
 Input: MAX RAIZ
-6     #raiz: a
+5     #raiz: a
 3.4028235e+38     #a
 Esperado: sqrt(3.4028235e+38) = 1.8446744e+19
 Output: Result: 2.0
+
+Input: MIN POT
+6     #potencia: a^b
+2     #a  
+0     #b
+Esperado: 2^0 = 1
+Output: Result: 1.0
+
+Input: MAX POT
+6       #potencia: a^b
+2       #a  
+127     #b
+Esperado: 2^127  = 1.7014118e+38
+Output: Result: 1.7014118E38
 
 Input: MIN TABUADA
 7     #tabuada: a
 -3.4028235e+37   #a(valor do limite dividido por 10, para nao dar overflow na op 'a x 10.0')
 Esperado: 
-4
-8
-12
-16
-20
-24
-28
-32
-36
-40
+1.0 x -3.4028235E37 = -3.4028235E37
+2.0 x -3.4028235E37 = -6.805647e+37
+3.0 x -3.4028235E37 = -1.020847e+38
+4.0 x -3.4028235E37 = -1.3611294e+38
+5.0 x -3.4028235E37 = -1.7014117e+38
+6.0 x -3.4028235E37 = -2.0416941e+38
+7.0 x -3.4028235E37 = -2.3819764e+38
+8.0 x -3.4028235E37 = -2.7222588e+38
+9.0 x -3.4028235E37 = -3.0625411e+38
+10.0 x -3.4028235E37 = -3.4028235E38
 Output:
 1.0 x -3.4028235E37 = -3.4028235E37
 2.0 x -3.4028235E37 = -6.805647E37
@@ -170,16 +172,16 @@ Input: MAX TABUADA
 7     #tabuada: a
 3.4028235e+37   #a(valor do limite dividido por 10, para nao dar overflow na op 'a x 10.0')
 Esperado: 
-4
-8
-12
-16
-20
-24
-28
-32
-36
-40
+1.0 x 3.4028235E37 = 3.4028235E37
+2.0 x 3.4028235E37 = 6.805647e+37
+3.0 x 3.4028235E37 = 1.020847e+38
+4.0 x 3.4028235E37 = 1.3611294e+38
+5.0 x 3.4028235E37 = 1.7014117e+38
+6.0 x 3.4028235E37 = 2.0416941e+38
+7.0 x 3.4028235E37 = 2.3819764e+38
+8.0 x 3.4028235E37 = 2.7222588e+38
+9.0 x 3.4028235E37 = 3.0625411e+38
+10.0 x 3.4028235E37 = 3.4028235E38
 Output:
 1.0 x 3.4028235E37 = 3.4028235E37
 2.0 x 3.4028235E37 = 6.805647E37
@@ -193,18 +195,19 @@ Output:
 10.0 x 3.4028235E37 = 3.4028235E38
 
 
-Input: MIN IMC
+Input: MIN IMC    (teste com caso valores abaixo do normal)
 8     #imc: peso/altura*altura
-TBD     #peso
-TBD     #altura
-Esperado: 4/5*5 = 0.16
-Output: Result: 0.16
+0.1     #peso
+0.2     #altura
+Esperado: 0.1/0.2*0.2 = 2.5
+Output: Result: Result: 2.4999998
 
-Input: MAX IMC
-9     #fatorial: a!
-4     #a
-Esperado: 4! = 24
-Output: Result: 24.0 
+Input: MAX IMC    (teste com caso valores acima do normal)
+8      #imc: peso/altura*altura
+600    #peso  
+3      #altura
+Esperado: 600/3*3 = 66.666666
+Output: Result: 66.666664
 
 Input: MIN FAT
 9     #fatorial: a!
