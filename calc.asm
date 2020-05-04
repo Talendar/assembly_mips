@@ -1,6 +1,13 @@
+# University of São Paulo - USP
+# Institute of Mathematics and Computer Sciences (ICMC)
 #
 # Simple program that simulates a calculator.
 #
+# Authors:
+# Gabriel de Oliveira Guedes Nogueira (to_do: nusp)
+# Lucas (to_do: nusp)
+# Matheus (to_do: nusp)
+# Daniel (to_do: nusp)
 	
 	.data
 	.align 0
