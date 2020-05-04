@@ -99,7 +99,7 @@ print_array_start:						# for(i = 0; i < n; i++)
 	add $s2, $s2, $s0					# getting the address of array[i] and putting it in $s2				
 	lw $a0, 0($s2)
 	li $v0, 1
-	syscall								# prints array[i]
+	syscall							# prints array[i]
 	
 	jal print_space
 	
